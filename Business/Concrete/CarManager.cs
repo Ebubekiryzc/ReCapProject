@@ -39,7 +39,10 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (checkDescription(car) && checkDailyPrice(car))
+            {
+                _carDal.Add(car);
+            }
         }
 
         public void Update(Car car)
@@ -50,6 +53,16 @@ namespace Business.Concrete
         public void Delete(Car car)
         {
             _carDal.Delete(car);
+        }
+
+        public bool checkDescription(Car car)
+        {
+            return car.Description.Length >= 2;
+        }
+
+        public bool checkDailyPrice(Car car)
+        {
+            return car.DailyPrice > 0;
         }
     }
 }
