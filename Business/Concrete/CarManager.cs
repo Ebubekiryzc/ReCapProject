@@ -19,17 +19,17 @@ namespace Business.Concrete
 
         public Car GetById(int id)
         {
-            return _carDal.Get(p => p.Id == id);
+            return _carDal.Get(c => c.Id == id);
         }
 
         public List<Car> GetCarsByBrandId(int brandId)
         {
-            return _carDal.GetAll(p => p.BrandId == brandId);
+            return _carDal.GetAll(c => c.BrandId == brandId);
         }
 
         public List<Car> GetCarsByColorId(int colorId)
         {
-            return _carDal.GetAll(p => p.ColorId == colorId);
+            return _carDal.GetAll(c => c.ColorId == colorId);
         }
 
         public List<Car> GetAll()
