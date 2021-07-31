@@ -9,17 +9,27 @@ using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    public class ICarManager : ICarService
+    public class CarManager : ICarService
     {
         private ICarDal _carDal;
-        public ICarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
 
         public Car GetById(int id)
         {
-            return _carDal.GetById(id);
+            return _carDal.Get(p => p.Id == id);
+        }
+
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _carDal.GetAll(p => p.BrandId == brandId);
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _carDal.GetAll(p => p.ColorId == colorId);
         }
 
         public List<Car> GetAll()

@@ -10,7 +10,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            ICarService carService = new ICarManager(new InMemoryCarDal());
+            ICarService carService = new CarManager(new InMemoryCarDal());
             Console.WriteLine("Get All:");
             GetAllCars(carService);
 
