@@ -23,6 +23,11 @@ namespace Business.Concrete
             return _brandDal.GetAll();
         }
 
+        public Brand GetById(int id)
+        {
+            return _brandDal.Get(b => b.Id == id);
+        }
+
         public void Add(Brand brand)
         {
             _brandDal.Add(brand);
