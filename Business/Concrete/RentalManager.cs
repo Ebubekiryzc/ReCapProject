@@ -55,29 +55,14 @@ namespace Business.Concrete
 
         public bool IsCarAvailable(Rental rental)
         {
-            using (ReCapProjectContext context = new ReCapProjectContext())
-            {
-                var result = (from r in context.Rentals
-                              where r.CarId == rental.CarId
-                              orderby r.ReturnDate
-                              select r).FirstOrDefault();
-                if (CheckNull(result) || CheckRentDate(result))
-                {
-                    return false;
-                }
+            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);
 
-                return true;
-            }
-        }
+            if (result.Any(r =>
+                r.ReturnDate >= rental.RentDate &&
+                r.RentDate <= rental.ReturnDate
+            )) return false;
 
-        public bool CheckNull(Rental rental)
-        {
-            return rental.ReturnDate == null;
-        }
-
-        public bool CheckRentDate(Rental rental)
-        {
-            return rental.RentDate < DateTime.Now;
+            return true;
         }
     }
 }
