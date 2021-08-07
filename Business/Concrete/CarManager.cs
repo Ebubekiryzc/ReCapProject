@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -14,57 +15,61 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public Car GetById(int id)
+        public IDataResult<Car> GetById(int id)
         {
-            return _carDal.Get(c => c.Id == id);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), "Car listed by id.");
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return _carDal.GetAll(c => c.BrandId == brandId);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), "Cars listed by brand id.");
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return _carDal.GetAll(c => c.ColorId == colorId);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), "Cars listed by color id.");
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), "All cars listed.");
         }
 
-        public List<CarDetailDto> GetCarsWithDetail()
+        public IDataResult<List<CarDetailDto>> GetCarsWithDetail()
         {
-            return _carDal.GetCarsWithDetail();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), "All cars listed with details.");
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            if (checkDescription(car) && checkDailyPrice(car))
+            if (CheckDescription(car) || CheckDailyPrice(car))
             {
-                _carDal.Add(car);
+                return new ErrorResult("An error has occurred when adding car.");
             }
+            _carDal.Add(car);
+            return new SuccessResult("Car added successfully.");
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult("Car updated successfully.");
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult("Car deleted successfully.");
         }
 
-        public bool checkDescription(Car car)
+        public bool CheckDescription(Car car)
         {
-            return car.Description.Length >= 2;
+            return car.Description.Length < 2;
         }
 
-        public bool checkDailyPrice(Car car)
+        public bool CheckDailyPrice(Car car)
         {
-            return car.DailyPrice > 0;
+            return car.DailyPrice <= 0;
         }
     }
 }
