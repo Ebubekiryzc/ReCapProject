@@ -3,6 +3,7 @@
     public static class Messages
     {
         public static string OperationSuccessful = "Operation successful.";
+        public static string OperationFailed = "Operation failed.";
 
         public static string BrandsListed = "Brands listed successfully.";
         public static string BrandListedById = "Brand listed by id.";
