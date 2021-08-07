@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -17,30 +18,30 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), "All rentals listed.");
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
         }
 
         public IDataResult<Rental> GetById(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), "Rental listed by id.");
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalListedById);
         }
 
         public IResult Add(Rental rental)
         {
             _rentalDal.Add(rental);
-            return new SuccessResult("Rental added successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
-            return new SuccessResult("Rental updated successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
-            return new SuccessResult("Rental deleted successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
     }
 }

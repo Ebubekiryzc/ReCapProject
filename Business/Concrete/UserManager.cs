@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,30 +22,30 @@ namespace Business.Concrete
 
         public IDataResult<List<User>> GetAll()
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(), "All users listed.");
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);
         }
 
         public IDataResult<User> GetById(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), "User listed by id.");
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), Messages.UserListedById);
         }
 
         public IResult Add(User user)
         {
             _userDal.Add(user);
-            return new SuccessResult("User added successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Update(User user)
         {
             _userDal.Update(user);
-            return new SuccessResult("User update successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
-            return new SuccessResult("User deleted successfully.");
+            return new SuccessResult(Messages.OperationSuccessful);
         }
     }
 }

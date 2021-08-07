@@ -17,16 +17,16 @@ namespace Business.Concrete
         }
         public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.AllCarsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListedByBrandId);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListed);
         }
 
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), Messages.CarsListedByColorId);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), Messages.CarsListed);
         }
 
         public IDataResult<Car> GetById(int id)
@@ -36,29 +36,29 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarsWithDetail()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), Messages.CarsListedWithDetail);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), Messages.CarsListed);
         }
 
         public IResult Add(Car car)
         {
             if (CheckDescription(car) || CheckDailyPrice(car))
             {
-                return new ErrorResult(Messages.CarAddingError);
+                return new ErrorResult(Messages.CarInvalid);
             }
             _carDal.Add(car);
-            return new SuccessResult(Messages.CarAdded);
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResult(Messages.CarUpdated);
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult(Messages.CarDeleted);
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         public bool CheckDescription(Car car)
