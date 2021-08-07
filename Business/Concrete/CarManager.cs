@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -14,52 +15,50 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
-        public IDataResult<Car> GetById(int id)
+        public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), "Car listed by id.");
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.AllCarsListed);
         }
-
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), "Cars listed by brand id.");
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListedByBrandId);
         }
 
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), "Cars listed by color id.");
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), Messages.CarsListedByColorId);
         }
 
-        public IDataResult<List<Car>> GetAll()
+        public IDataResult<Car> GetById(int id)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), "All cars listed.");
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), Messages.CarListedById);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarsWithDetail()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), "All cars listed with details.");
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), Messages.CarsListedWithDetail);
         }
 
         public IResult Add(Car car)
         {
             if (CheckDescription(car) || CheckDailyPrice(car))
             {
-                return new ErrorResult("An error has occurred when adding car.");
+                return new ErrorResult(Messages.CarAddingError);
             }
             _carDal.Add(car);
-            return new SuccessResult("Car added successfully.");
+            return new SuccessResult(Messages.CarAdded);
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResult("Car updated successfully.");
+            return new SuccessResult(Messages.CarUpdated);
         }
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult("Car deleted successfully.");
+            return new SuccessResult(Messages.CarDeleted);
         }
 
         public bool CheckDescription(Car car)
