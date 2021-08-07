@@ -54,10 +54,14 @@ namespace ConsoleUI
 
         private static void GetAllCarsWithDetails(ICarService carService)
         {
-            foreach (var carDetailDto in carService.GetCarsWithDetail())
+            if (carService.GetCarsWithDetail().Success)
             {
-                Console.WriteLine("{0} {1} {2} {3}", carDetailDto.CarName, carDetailDto.BrandName, carDetailDto.ColorName,
-                    carDetailDto.DailyPrice);
+                foreach (var carDetailDto in carService.GetCarsWithDetail().Data)
+                {
+                    Console.WriteLine("{0} {1} {2} {3}", carDetailDto.CarName, carDetailDto.BrandName,
+                        carDetailDto.ColorName,
+                        carDetailDto.DailyPrice);
+                }
             }
         }
 
@@ -88,15 +92,18 @@ namespace ConsoleUI
         private static void GetColorById(IColorService colorService, int id)
         {
             Console.WriteLine("\nGet by Id:");
-            Console.WriteLine(colorService.GetById(id).Name);
+            Console.WriteLine(colorService.GetById(id).Data.Name);
         }
 
         private static void GetAllColors(IColorService colorService)
         {
-            Console.WriteLine("All Colors:");
-            foreach (var color in colorService.GetAll())
+            if (colorService.GetAll().Success)
             {
-                Console.WriteLine(color.Name);
+                Console.WriteLine("All Colors:");
+                foreach (var color in colorService.GetAll().Data)
+                {
+                    Console.WriteLine(color.Name);
+                }
             }
         }
 
@@ -125,16 +132,22 @@ namespace ConsoleUI
 
         private static void GetBrandById(IBrandService brandService, int id)
         {
-            Console.WriteLine("\nGet by Id:");
-            Console.WriteLine(brandService.GetById(id).Name);
+            if (brandService.GetById(id).Success)
+            {
+                Console.WriteLine("\nGet by Id:");
+                Console.WriteLine(brandService.GetById(id).Data.Name);
+            }
         }
 
         private static void GetAllBrands(IBrandService brandService)
         {
-            Console.WriteLine("All Brands:");
-            foreach (var brand in brandService.GetAll())
+            if (brandService.GetAll().Success)
             {
-                Console.WriteLine(brand.Name);
+                Console.WriteLine("All Brands:");
+                foreach (var brand in brandService.GetAll().Data)
+                {
+                    Console.WriteLine(brand.Name);
+                }
             }
         }
 
@@ -164,16 +177,22 @@ namespace ConsoleUI
 
         private static void GetCarById(ICarService carService, int id)
         {
-            Console.WriteLine("\nGet by Id:");
-            Console.WriteLine(carService.GetById(id).Description);
+            if (carService.GetById(id).Success)
+            {
+                Console.WriteLine("\nGet by Id:");
+                Console.WriteLine(carService.GetById(id).Data.Description);
+            }
         }
 
         private static void GetAllCars(ICarService carService)
         {
-            Console.WriteLine("All Cars:");
-            foreach (var car in carService.GetAll())
+            if (carService.GetAll().Success)
             {
-                Console.WriteLine(car.Description);
+                Console.WriteLine("All Cars:");
+                foreach (var car in carService.GetAll().Data)
+                {
+                    Console.WriteLine(car.Description);
+                }
             }
         }
     }
