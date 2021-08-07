@@ -43,6 +43,10 @@ namespace Business.Concrete
 
         public IResult Update(Rental rental)
         {
+            if (!IsCarAvailable(rental))
+            {
+                return new ErrorResult(Messages.OperationFailed);
+            }
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.OperationSuccessful);
         }
