@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Business.Concrete
 {
