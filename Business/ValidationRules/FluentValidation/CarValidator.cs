@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class CarValidatior : AbstractValidator<Car>
+    public class CarValidator : AbstractValidator<Car>
     {
-        public CarValidatior()
+        public CarValidator()
         {
             RuleFor(c => c.BrandId).NotEmpty();
             RuleFor(c => c.ColorId).NotEmpty();
