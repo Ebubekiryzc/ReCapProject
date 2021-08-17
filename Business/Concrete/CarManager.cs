@@ -13,14 +13,17 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         private ICarDal _carDal;
+
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
+
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
+
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListed);
