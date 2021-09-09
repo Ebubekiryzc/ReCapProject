@@ -7,6 +7,7 @@ using Entities.Concrete;
 using System.Linq;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -32,10 +33,13 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            if (!IsCarAvailable(rental))
+            var result = BusinessRules.Check(IsCarAvailable(rental));
+
+            if (result is ErrorResult)
             {
-                return new ErrorResult(Messages.OperationFailed);
+                return result;
             }
+
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.OperationSuccessful);
         }
@@ -43,10 +47,13 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
-            if (!IsCarAvailable(rental))
+            var result = BusinessRules.Check(IsCarAvailable(rental));
+
+            if (result is ErrorResult)
             {
-                return new ErrorResult(Messages.OperationFailed);
+                return result;
             }
+
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.OperationSuccessful);
         }
@@ -57,16 +64,16 @@ namespace Business.Concrete
             return new SuccessResult(Messages.OperationSuccessful);
         }
 
-        public bool IsCarAvailable(Rental rental)
+        private IResult IsCarAvailable(Rental rental)
         {
             var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);
 
             if (result.Any(r =>
                 r.ReturnDate >= rental.RentDate &&
                 r.RentDate <= rental.ReturnDate
-            )) return false;
+            )) return new ErrorResult(Messages.DateInvalid);
 
-            return true;
+            return new SuccessResult(Messages.OperationSuccessful);
         }
     }
 }
