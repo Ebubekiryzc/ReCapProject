@@ -20,8 +20,10 @@
 
         public static string RentalsListed = "Rentals listed successfully.";
         public static string RentalListedById = "Rental listed by id.";
+        public static string DateInvalid = "The date ranges entered are incorrect.";
 
         public static string UsersListed = "Users listed successfully.";
         public static string UserListedById = "User listed by id.";
+        public static string MaxImageOfCarExceeded = "You can add maximum of 5 images for each car.";
     }
 }
