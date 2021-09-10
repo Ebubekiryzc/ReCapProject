@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -28,6 +30,12 @@ namespace Business.Concrete
             return CheckIfCarHaveImage(carId);
         }
 
+        public IDataResult<CarImage> GetById(int id)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(cI => cI.Id == id), Messages.OperationSuccessful);
+        }
+
+        [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage)
         {
             var result = BusinessRules.Check(CheckIfCarHaveMoreThanFiveImage(carImage.CarId));
@@ -42,8 +50,11 @@ namespace Business.Concrete
             return new SuccessResult(Messages.OperationSuccessful);
         }
 
+        [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(CarImage carImage)
         {
+
+            SetUploadDateToNow(carImage);
             _carImageDal.Update(carImage);
             return new SuccessResult(Messages.OperationSuccessful);
         }
@@ -73,7 +84,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<List<CarImage>>(
                 new List<CarImage>
-                    { new() { CarId = carId, ImagePath = ImageInfo.DefaultImage, UploadDate = DateTime.Now } },
+                    { new() { CarId = carId, ImagePath = DefaultRoutes.DefaultImage, UploadDate = DateTime.Now } },
                 Messages.OperationSuccessful);
         }
 

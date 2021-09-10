@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult Add([FromForm] CarImage carImage, IFormFile image)
         {
-            var operationResult = FileHelper.AddAsync(image, ImageInfo.DefaultImageFolder);
+            var operationResult = FileHelper.AddAsync(image, DefaultRoutes.DefaultImageFolder);
 
             if (operationResult is ErrorDataResult<string>)
             {
@@ -60,6 +60,12 @@ namespace WebAPI.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] CarImage carImage, IFormFile image)
         {
+            var isRecordExist = _carImageService.GetById(carImage.Id);
+            if (!isRecordExist.Success)
+            {
+                return ReturnResult(isRecordExist);
+            }
+
             var operationDeleteResult = FileHelper.DeleteAsync(carImage.ImagePath);
 
             if (operationDeleteResult is ErrorResult)
@@ -67,7 +73,7 @@ namespace WebAPI.Controllers
                 ReturnResult(operationDeleteResult);
             }
 
-            var operationAddResult = FileHelper.AddAsync(image, ImageInfo.DefaultImageFolder);
+            var operationAddResult = FileHelper.AddAsync(image, DefaultRoutes.DefaultImageFolder);
 
             if (operationAddResult is ErrorDataResult<string>)
             {
