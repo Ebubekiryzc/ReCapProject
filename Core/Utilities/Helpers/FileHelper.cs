@@ -7,7 +7,7 @@ namespace Core.Utilities.Helpers
 {
     public static class FileHelper
     {
-        public static IResult AddAsync(IFormFile file, string path)
+        public static IDataResult<string> AddAsync(IFormFile file, string path)
         {
             string fileNameWithGUID;
             try
@@ -29,10 +29,10 @@ namespace Core.Utilities.Helpers
             }
             catch (Exception e)
             {
-                return new ErrorResult(e.Message);
+                return new ErrorDataResult<string>(message: e.Message);
             }
 
-            return new SuccessResult(Path.Combine(path, fileNameWithGUID));
+            return new SuccessDataResult<string>(Path.Combine(path, fileNameWithGUID), "Operation Successful!");
         }
 
         public static IResult DeleteAsync(string path)

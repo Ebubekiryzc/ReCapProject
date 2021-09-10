@@ -42,12 +42,12 @@ namespace WebAPI.Controllers
         {
             var operationResult = FileHelper.AddAsync(image, ImageInfo.DefaultImageFolder);
 
-            if (operationResult is ErrorResult)
+            if (operationResult is ErrorDataResult<string>)
             {
                 return ReturnResult(operationResult);
             }
 
-            carImage.ImagePath = operationResult.Message;
+            carImage.ImagePath = operationResult.Data;
 
             var result = _carImageService.Add(carImage);
             if (!result.Success)
@@ -60,21 +60,21 @@ namespace WebAPI.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] CarImage carImage, IFormFile image)
         {
-            var operationResult = FileHelper.DeleteAsync(carImage.ImagePath);
+            var operationDeleteResult = FileHelper.DeleteAsync(carImage.ImagePath);
 
-            if (operationResult is ErrorResult)
+            if (operationDeleteResult is ErrorResult)
             {
-                ReturnResult(operationResult);
+                ReturnResult(operationDeleteResult);
             }
 
-            operationResult = FileHelper.AddAsync(image, ImageInfo.DefaultImageFolder);
+            var operationAddResult = FileHelper.AddAsync(image, ImageInfo.DefaultImageFolder);
 
-            if (operationResult is ErrorResult)
+            if (operationAddResult is ErrorDataResult<string>)
             {
-                return ReturnResult(operationResult);
+                return ReturnResult(operationAddResult);
             }
 
-            carImage.ImagePath = operationResult.Message;
+            carImage.ImagePath = operationAddResult.Data;
 
             var result = _carImageService.Update(carImage);
             return ReturnResult(result);
