@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public IDataResult<Color> GetById(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == id), Messages.ColorListedById);
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == id), Messages.ColorListed);
         }
 
         [ValidationAspect(typeof(ColorValidator))]

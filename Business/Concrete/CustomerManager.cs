@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -18,33 +18,33 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IDataResult<List<Customer>> GetAll()
+        public IDataResult<List<IndividualCustomer>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.CustomersListed);
+            return new SuccessDataResult<List<IndividualCustomer>>(_customerDal.GetAll(), Messages.CustomersListed);
         }
 
-        public IDataResult<Customer> GetById(int id)
+        public IDataResult<IndividualCustomer> GetById(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.Id == id), Messages.CustomerListedById);
+            return new SuccessDataResult<IndividualCustomer>(_customerDal.Get(c => c.Id == id), Messages.CustomerListed);
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Add(Customer customer)
+        public IResult Add(IndividualCustomer individualCustomer)
         {
-            _customerDal.Add(customer);
+            _customerDal.Add(individualCustomer);
             return new SuccessResult(Messages.OperationSuccessful);
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Update(Customer customer)
+        public IResult Update(IndividualCustomer individualCustomer)
         {
-            _customerDal.Update(customer);
+            _customerDal.Update(individualCustomer);
             return new SuccessResult(Messages.OperationSuccessful);
         }
 
-        public IResult Delete(Customer customer)
+        public IResult Delete(IndividualCustomer individualCustomer)
         {
-            _customerDal.Delete(customer);
+            _customerDal.Delete(individualCustomer);
             return new SuccessResult(Messages.OperationSuccessful);
         }
     }

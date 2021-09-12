@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract;
-using Entities.Concrete;
-using System.Linq;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
+using Entities.Concrete;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         public IDataResult<Rental> GetById(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalListedById);
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalListed);
         }
 
         [ValidationAspect(typeof(RentalValidator))]

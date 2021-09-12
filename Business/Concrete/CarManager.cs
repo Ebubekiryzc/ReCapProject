@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -7,6 +6,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -36,7 +36,7 @@ namespace Business.Concrete
 
         public IDataResult<Car> GetById(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), Messages.CarListedById);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id), Messages.CarListed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarsWithDetail()
