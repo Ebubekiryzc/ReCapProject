@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Business.Abstract;
+﻿using Business.Abstract;
+using Core.Entities.Concretes;
 using Core.Utilities.Results;
-using Entities.Concrete;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
