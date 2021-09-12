@@ -7,6 +7,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using System.Collections.Generic;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -44,6 +45,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsWithDetail(), Messages.CarsListed);
         }
 
+        [SecuredOperation("Admin, Car.Add")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
