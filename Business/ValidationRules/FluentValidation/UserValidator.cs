@@ -1,4 +1,4 @@
-﻿using Core.Entities.Concretes;
+﻿using Core.Entities.Concrete;
 using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation

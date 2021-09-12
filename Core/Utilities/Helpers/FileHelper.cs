@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using Core.Utilities.Results;
+﻿using Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace Core.Utilities.Helpers
 {
