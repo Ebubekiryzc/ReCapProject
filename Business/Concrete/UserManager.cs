@@ -18,6 +18,11 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user), Messages.UserClaimsListed);
+        }
+
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);
@@ -25,7 +30,12 @@ namespace Business.Concrete
 
         public IDataResult<User> GetById(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), Messages.UserListedById);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), Messages.UserListed);
+        }
+
+        public IDataResult<User> GetByMail(string email)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email), Messages.UserListed);
         }
 
         [ValidationAspect(typeof(UserValidator))]
