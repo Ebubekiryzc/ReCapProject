@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.Entities;
+using Core.Entities.Abstracts;
 
 namespace Entities.Concrete
 {
