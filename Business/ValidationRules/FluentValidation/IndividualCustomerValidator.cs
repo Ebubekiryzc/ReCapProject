@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class CustomerValidator : AbstractValidator<Customer>
+    public class IndividualCustomerValidator : AbstractValidator<IndividualCustomer>
     {
-        public CustomerValidator()
+        public IndividualCustomerValidator()
         {
             RuleFor(c => c.CompanyName).NotEmpty();
         }
