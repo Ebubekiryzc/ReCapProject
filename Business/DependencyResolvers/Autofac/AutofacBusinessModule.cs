@@ -7,7 +7,6 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
-//using Microsoft.AspNetCore.Http;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -31,8 +30,6 @@ namespace Business.DependencyResolvers.Autofac
             //<--------------------------------------------------------------------------------------------------->                              
             builder.RegisterType<IndividualCustomerManager>().As<IIndividualCustomerService>().SingleInstance();
             builder.RegisterType<EfIndividualCustomerDal>().As<IIndividualCustomerDal>().SingleInstance();
-            //<--------------------------------------------------------------------------------------------------->                              
-            //builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
             //<--------------------------------------------------------------------------------------------------->                              
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
