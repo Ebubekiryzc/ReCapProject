@@ -39,7 +39,8 @@ namespace Business.Concrete
 
         public IDataResult<RentalDetailsForIndividualCustomers> GetRentalDetailsForIndividualCustomersByRentalId(int id)
         {
-            return new SuccessDataResult<RentalDetailsForIndividualCustomers>(_rentalDal.GetRentalDetailsForIndividualCustomersByRentalId(id), Messages.RentalListed)
+            return new SuccessDataResult<RentalDetailsForIndividualCustomers>(
+                _rentalDal.GetRentalDetailsForIndividualCustomersByRentalId(id), Messages.RentalListed);
         }
 
         [ValidationAspect(typeof(RentalValidator))]
