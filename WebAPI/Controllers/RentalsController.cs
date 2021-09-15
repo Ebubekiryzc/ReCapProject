@@ -30,6 +30,20 @@ namespace WebAPI.Controllers
             return ReturnResult(result);
         }
 
+        [HttpGet("getallwithindividualcustomerdetails")]
+        public IActionResult GetAllWithIndividualCustomerDetails()
+        {
+            var result = _rentalService.GetAllRentalsWithIndividualCustomerDetails();
+            return ReturnResult(result);
+        }
+
+        [HttpGet("getwithindividualcustomerdetailsbyrentalid")]
+        public IActionResult GetWithIndividualCustomerDetailsByRentalId(int id)
+        {
+            var result = _rentalService.GetRentalDetailsForIndividualCustomersByRentalId(id);
+            return ReturnResult(result);
+        }
+
         [HttpPost("add")]
         public IActionResult Add(Rental rental)
         {

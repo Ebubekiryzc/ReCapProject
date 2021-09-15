@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
 using System.Linq;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -28,6 +29,17 @@ namespace Business.Concrete
         public IDataResult<Rental> GetById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id), Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailsForIndividualCustomers>> GetAllRentalsWithIndividualCustomerDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailsForIndividualCustomers>>(
+                _rentalDal.GetAllRentalsWithIndividualCustomerDetails(), Messages.RentalsListed);
+        }
+
+        public IDataResult<RentalDetailsForIndividualCustomers> GetRentalDetailsForIndividualCustomersByRentalId(int id)
+        {
+            return new SuccessDataResult<RentalDetailsForIndividualCustomers>(_rentalDal.GetRentalDetailsForIndividualCustomersByRentalId(id), Messages.RentalListed)
         }
 
         [ValidationAspect(typeof(RentalValidator))]
