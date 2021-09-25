@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.IO;
+using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
@@ -31,16 +32,20 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbycarid")]
-        public IActionResult GetById(int id)
+        public IActionResult GetByCarId(int id)
         {
             var result = _carImageService.GetByCarId(id);
+            foreach (var carImage in result.Data)
+            {
+                carImage.ImagePath = $"{DefaultRoutes.DefaultImageFolder}{Path.GetFileName(carImage.ImagePath)}";
+            }
             return ReturnResult(result);
         }
 
         [HttpPost("add")]
         public IActionResult Add([FromForm] CarImage carImage, IFormFile image)
         {
-            var operationResult = FileHelper.AddAsync(image, DefaultRoutes.DefaultImageFolder);
+            var operationResult = FileHelper.AddAsync(image, $"{_webHostEnvironment.WebRootPath}/images");
 
             if (operationResult is ErrorDataResult<string>)
             {
@@ -73,7 +78,7 @@ namespace WebAPI.Controllers
                 ReturnResult(operationDeleteResult);
             }
 
-            var operationAddResult = FileHelper.AddAsync(image, DefaultRoutes.DefaultImageFolder);
+            var operationAddResult = FileHelper.AddAsync(image, $"{_webHostEnvironment.WebRootPath}/images");
 
             if (operationAddResult is ErrorDataResult<string>)
             {
