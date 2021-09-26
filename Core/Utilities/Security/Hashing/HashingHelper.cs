@@ -5,23 +5,23 @@ namespace Core.Utilities.Security.Hashing
 {
     public class HashingHelper
     {
-        public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public static void CreateHash(string textWillBeHash, out byte[] textHash, out byte[] textSalt)
         {
             using (var hmac = new HMACSHA512())
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                textSalt = hmac.Key;
+                textHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(textWillBeHash));
             }
         }
 
-        public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        public static bool VerifyHash(string textWillBeHash, byte[] textHash, byte[] textSalt)
         {
-            using (var hmac = new HMACSHA512(passwordSalt))
+            using (var hmac = new HMACSHA512(textSalt))
             {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(textWillBeHash));
                 for (int i = 0; i < computedHash.Length; i++)
                 {
-                    if (computedHash[i] != passwordHash[i])
+                    if (computedHash[i] != textHash[i])
                     {
                         return false;
                     }
