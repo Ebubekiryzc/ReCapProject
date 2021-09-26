@@ -27,10 +27,21 @@ namespace Business.DependencyResolvers.Autofac
             //<--------------------------------------------------------------------------------------------------->                              
             builder.RegisterType<ColorManager>().As<IColorService>().SingleInstance();
             builder.RegisterType<EfColorDal>().As<IColorDal>().SingleInstance();
+            //<--------------------------------------------------------------------------------------------------->
+            builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
+            builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>().SingleInstance();
+            //<--------------------------------------------------------------------------------------------------->    
+            builder.RegisterType<CreditCardTypeManager>().As<ICreditCardTypeService>().SingleInstance();
+            builder.RegisterType<EfCreditCardTypeDal>().As<ICreditCardTypeDal>().SingleInstance();
+            //<--------------------------------------------------------------------------------------------------->
+            builder.RegisterType<UserCreditCardManager>().As<IUserCreditCardService>().SingleInstance();
+            builder.RegisterType<EfUserCreditCardDal>().As<IUserCreditCardDal>().SingleInstance();
             //<--------------------------------------------------------------------------------------------------->                              
             builder.RegisterType<IndividualCustomerManager>().As<IIndividualCustomerService>().SingleInstance();
             builder.RegisterType<EfIndividualCustomerDal>().As<IIndividualCustomerDal>().SingleInstance();
-            //<--------------------------------------------------------------------------------------------------->                              
+            //<--------------------------------------------------------------------------------------------------->
+            builder.RegisterType<FakePaymentManager>().As<IPaymentService>().SingleInstance();
+            //<--------------------------------------------------------------------------------------------------->
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
             //<--------------------------------------------------------------------------------------------------->                              
