@@ -5,7 +5,7 @@ namespace Entities.DTOs
 {
     public class PaymentQueryDto : IDto
     {
-        public UserCreditCard UserCreditCard { get; set; }
+        public CreditCardForUserOperationsDto CreditCardForUserOperationsDto { get; set; }
         public Rental Rental { get; set; }
     }
 }

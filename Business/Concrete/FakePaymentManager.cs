@@ -4,6 +4,7 @@ using Core.Aspects.Autofac.Transaction;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -19,9 +20,9 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        public IResult GetPayment(UserCreditCard userCreditCard, Rental rental)
+        public IResult GetPayment(CreditCardForUserOperationsDto creditCardForUserOperationsDto, Rental rental)
         {
-            var result = BusinessRules.Check(_creditCardService.GetById(userCreditCard.CreditCardId), _rentalService.Add(rental));
+            var result = BusinessRules.Check(_creditCardService.GetById(creditCardForUserOperationsDto.Id), _rentalService.Add(rental));
             if (result is ErrorResult)
             {
                 return result;

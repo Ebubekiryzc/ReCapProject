@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
         [HttpPost("getpayment")]
         public IActionResult GetPayment(PaymentQueryDto paymentQueryDto)
         {
-            var result = _paymentService.GetPayment(paymentQueryDto.UserCreditCard, paymentQueryDto.Rental);
+            var result = _paymentService.GetPayment(paymentQueryDto.CreditCardForUserOperationsDto, paymentQueryDto.Rental);
             return ReturnResult(result);
         }
 
