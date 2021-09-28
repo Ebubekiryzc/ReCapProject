@@ -18,7 +18,7 @@ namespace DataAccess.Concrete.EntityFramework
                              join brand in context.Brands on car.BrandId equals brand.Id
                              join individualCustomer in context.IndividualCustomers on rental.CustomerId equals
                                  individualCustomer.Id
-                             select new RentalDetailsForIndividualCustomers { Id = rental.Id, BrandName = brand.Name, CustomerName = $"{individualCustomer.FirstName + individualCustomer.LastName}", RentDate = rental.RentDate, ReturnDate = rental.ReturnDate };
+                             select new RentalDetailsForIndividualCustomers { Id = rental.Id, BrandName = brand.Name, CustomerName = $"{individualCustomer.FirstName}  {individualCustomer.LastName}", RentDate = rental.RentDate, ReturnDate = rental.ReturnDate };
                 return result.ToList();
             }
         }
@@ -37,7 +37,7 @@ namespace DataAccess.Concrete.EntityFramework
                              {
                                  Id = rental.Id,
                                  BrandName = brand.Name,
-                                 CustomerName = $"{individualCustomer.FirstName + individualCustomer.LastName}",
+                                 CustomerName = $"{individualCustomer.FirstName}  {individualCustomer.LastName}",
                                  RentDate = rental.RentDate,
                                  ReturnDate = rental.ReturnDate
                              };
