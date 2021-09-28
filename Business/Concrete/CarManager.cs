@@ -1,8 +1,8 @@
 ﻿using Business.Abstract;
-using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -15,10 +15,12 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         private ICarDal _carDal;
+        private ICarImageService _carImageService;
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal, ICarImageService carImageService)
         {
             _carDal = carDal;
+            _carImageService = carImageService;
         }
 
         [CacheAspect]
@@ -74,7 +76,7 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("ICarService.Get")]
-        [SecuredOperation("admin,moderator")]
+        //[SecuredOperation("admin,moderator")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
@@ -83,7 +85,7 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("ICarService.Get")]
-        [SecuredOperation("admin,moderator")]
+        //[SecuredOperation("admin,moderator")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
@@ -92,9 +94,25 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("ICarService.Get")]
-        [SecuredOperation("admin,moderator")]
+        //[SecuredOperation("admin,moderator")]
+        [TransactionScopeAspect]
         public IResult Delete(Car car)
         {
+            bool result = false;
+            var imageList = _carImageService.GetByCarId(car.Id).Data;
+            if (imageList.Count == 1)
+            {
+                result = imageList[0].ImagePath.Equals(DefaultRoutes.DefaultImage);
+            }
+
+            if (!result)
+            {
+                foreach (CarImage image in imageList)
+                {
+                    _carImageService.Delete(image);
+                }
+            }
+
             _carDal.Delete(car);
             return new SuccessResult(Messages.OperationSuccessful);
         }
