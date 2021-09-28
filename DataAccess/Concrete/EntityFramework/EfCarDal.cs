@@ -22,7 +22,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = car.Description,
                                  BrandName = brand.Name,
                                  ColorName = color.Name,
-                                 DailyPrice = car.DailyPrice
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear
                              };
                 return result.ToList();
             }
@@ -42,7 +43,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = car.Description,
                                  BrandName = brand.Name,
                                  ColorName = color.Name,
-                                 DailyPrice = car.DailyPrice
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear
                              };
                 return result.SingleOrDefault();
             }
@@ -62,7 +64,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = car.Description,
                                  BrandName = brand.Name,
                                  ColorName = color.Name,
-                                 DailyPrice = car.DailyPrice
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear
                              };
                 return result.ToList();
             }
@@ -82,7 +85,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = car.Description,
                                  BrandName = brand.Name,
                                  ColorName = color.Name,
-                                 DailyPrice = car.DailyPrice
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear
                              };
                 return result.ToList();
             }
@@ -101,7 +105,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = car.Description,
                                  BrandName = brand.Name,
                                  ColorName = color.Name,
-                                 DailyPrice = car.DailyPrice
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear
                              };
                 return result.ToList();
             }
