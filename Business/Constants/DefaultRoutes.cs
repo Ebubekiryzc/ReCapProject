@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Business.Constants
+﻿namespace Business.Constants
 {
     public static class DefaultRoutes
     {
