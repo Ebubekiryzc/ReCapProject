@@ -14,7 +14,7 @@ namespace Core.Utilities.Business
                 }
             }
 
-            return null;
+            return logics[^1];
         }
     }
 }
