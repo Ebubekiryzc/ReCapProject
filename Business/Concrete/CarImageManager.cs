@@ -66,7 +66,7 @@ namespace Business.Concrete
             {
                 return result;
             }
-            carImage.ImagePath = Path.Combine(path, ((SuccessDataResult<string>)result).Data);
+            carImage.ImagePath = ((SuccessDataResult<string>)result).Data;
 
             SetUploadDateToNow(carImage);
             _carImageDal.Update(carImage);
