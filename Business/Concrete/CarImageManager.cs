@@ -4,11 +4,14 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
+using Core.Utilities.Helpers;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Business.Concrete
@@ -16,6 +19,7 @@ namespace Business.Concrete
     public class CarImageManager : ICarImageService
     {
         private ICarImageDal _carImageDal;
+
         public CarImageManager(ICarImageDal carImageDal)
         {
             _carImageDal = carImageDal;
@@ -36,26 +40,33 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(cI => cI.Id == id), Messages.OperationSuccessful);
         }
 
-        [TransactionScopeAspect]
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Add(CarImage carImage)
+        [TransactionScopeAspect]
+        public IResult Add(IFormFile image, CarImage carImage)
         {
-            var result = BusinessRules.Check(CheckIfCarHaveMoreThanFiveImage(carImage.CarId));
-
+            var result = BusinessRules.Check(CheckIfCarHaveMoreThanFiveImage(carImage.CarId), FileHelper.AddAsync(image, carImage.ImagePath));
             if (result is ErrorResult)
             {
                 return result;
             }
+            carImage.ImagePath = ((SuccessDataResult<string>)result).Data;
 
             SetUploadDateToNow(carImage);
             _carImageDal.Add(carImage);
             return new SuccessResult(Messages.OperationSuccessful);
         }
 
-        [TransactionScopeAspect]
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Update(CarImage carImage)
+        [TransactionScopeAspect]
+        public IResult Update(IFormFile image, CarImage carImage)
         {
+            var path = Path.GetDirectoryName(carImage.ImagePath);
+            var result = BusinessRules.Check(GetById(carImage.Id), FileHelper.DeleteAsync(carImage.ImagePath), FileHelper.AddAsync(image, path));
+            if (!result.Success)
+            {
+                return result;
+            }
+            carImage.ImagePath = Path.Combine(path, ((SuccessDataResult<string>)result).Data);
 
             SetUploadDateToNow(carImage);
             _carImageDal.Update(carImage);
@@ -66,6 +77,13 @@ namespace Business.Concrete
         public IResult Delete(CarImage carImage)
         {
             _carImageDal.Delete(carImage);
+
+            var operationResult = BusinessRules.Check(FileHelper.DeleteAsync(carImage.ImagePath));
+            if (operationResult is ErrorResult)
+            {
+                return operationResult;
+            }
+
             return new SuccessResult(Messages.OperationSuccessful);
         }
 

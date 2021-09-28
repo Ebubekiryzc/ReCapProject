@@ -1,7 +1,5 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Core.Utilities.Business;
-using Core.Utilities.Helpers;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +32,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbycarid")]
         public IActionResult GetByCarId(int id)
         {
+            //TODO: Will be removed in production
             var result = _carImageService.GetByCarId(id);
             foreach (var carImage in result.Data)
             {
@@ -45,62 +44,22 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult Add([FromForm] CarImage carImage, IFormFile image)
         {
-            var operationResult = FileHelper.AddAsync(image, $"{_webHostEnvironment.WebRootPath}/images");
-
-            if (operationResult is ErrorDataResult<string>)
-            {
-                return ReturnResult(operationResult);
-            }
-
-            carImage.ImagePath = operationResult.Data;
-
-            var result = _carImageService.Add(carImage);
-            if (!result.Success)
-            {
-                Delete(carImage);
-            };
-            return Ok(result);
+            carImage.ImagePath = $"{_webHostEnvironment.WebRootPath}/images";
+            var result = _carImageService.Add(image, carImage);
+            return ReturnResult(result);
         }
 
         [HttpPost("update")]
         public IActionResult Update([FromForm] CarImage carImage, IFormFile image)
         {
-            var isRecordExist = _carImageService.GetById(carImage.Id);
-            if (!isRecordExist.Success)
-            {
-                return ReturnResult(isRecordExist);
-            }
-
-            var operationDeleteResult = FileHelper.DeleteAsync(carImage.ImagePath);
-
-            if (operationDeleteResult is ErrorResult)
-            {
-                ReturnResult(operationDeleteResult);
-            }
-
-            var operationAddResult = FileHelper.AddAsync(image, $"{_webHostEnvironment.WebRootPath}/images");
-
-            if (operationAddResult is ErrorDataResult<string>)
-            {
-                return ReturnResult(operationAddResult);
-            }
-
-            carImage.ImagePath = operationAddResult.Data;
-
-            var result = _carImageService.Update(carImage);
+            var result = _carImageService.Update(image, carImage);
             return ReturnResult(result);
         }
 
         [HttpPost("delete")]
         public IActionResult Delete([FromForm] CarImage carImage)
         {
-            var operationResult = BusinessRules.Check(FileHelper.DeleteAsync(carImage.ImagePath));
-
-            if (operationResult is ErrorResult)
-            {
-                return ReturnResult(operationResult);
-            }
-
+            carImage = _carImageService.GetById(carImage.Id).Data;
             var result = _carImageService.Delete(carImage);
             return ReturnResult(result);
         }
