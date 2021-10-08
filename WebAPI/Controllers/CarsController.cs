@@ -79,6 +79,13 @@ namespace WebAPI.Controllers
             return ReturnResult(result);
         }
 
+        [HttpGet("gettopsixdeals")]
+        public IActionResult GetTopSixDeals()
+        {
+            var result = _carService.GetTopSixDealsWithDetails();
+            return ReturnResult(result);
+        }
+
         [HttpPost("add")]
         public IActionResult Add(Car car)
         {

@@ -45,6 +45,7 @@
         public static string UserNotFound = "User not found!";
         public static string PasswordError = "Password does not match!";
         public static string UserAlreadyExists = "User already exists!";
+        public static string LoginSuccessful = "Successfully logined.";
         public static string RegistrationSuccessful = "Registration completed successfully.";
         public static string AccessTokenCreatedSuccessfully = "Access token created.";
         public static string AuthorizationDenied = "You are not allowed for that action!";

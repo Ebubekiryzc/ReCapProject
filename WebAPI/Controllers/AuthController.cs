@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -32,15 +33,50 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
-            if (!userExists.Success)
+            var userExists = IsUserExists(userForRegisterDto);
+            if (userExists is ErrorResult)
             {
-                return BadRequest(userExists.Message);
+                return BadRequest(userExists);
             }
 
             var registerResult = _authService.Register(userForRegisterDto);
+            if (registerResult is ErrorResult)
+            {
+                return BadRequest(userExists);
+            }
+
             var result = _authService.CreateAccessToken(registerResult.Data);
             return ReturnResult(result);
+        }
+
+        [HttpPost("registerindividualcustomer")]
+        public IActionResult RegisterForIndividualCustomer(
+            IndividualCustomerForRegisterDto individualCustomerForRegisterDto)
+        {
+            var userExists = IsUserExists(individualCustomerForRegisterDto);
+            if (userExists is ErrorResult)
+            {
+                return BadRequest(userExists);
+            }
+
+            var registerResult = _authService.RegisterForIndividualCustomer(individualCustomerForRegisterDto);
+            if (registerResult is ErrorResult)
+            {
+                return BadRequest(userExists);
+            }
+
+            var result = _authService.CreateAccessToken(registerResult.Data);
+            return ReturnResult(result);
+        }
+
+        private IResult IsUserExists(UserForRegisterDto userForRegisterDto)
+        {
+            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            if (!userExists.Success)
+            {
+                return new ErrorResult(Messages.OperationFailed);
+            }
+            return new SuccessResult(Messages.OperationSuccessful);
         }
 
         private IActionResult ReturnResult(IResult result)

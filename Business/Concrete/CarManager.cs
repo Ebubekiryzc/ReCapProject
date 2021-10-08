@@ -75,6 +75,11 @@ namespace Business.Concrete
                 _carDal.GetCarsWithDetailsByBrandIdAndColorId(brandId, colorId), Messages.CarsListed);
         }
 
+        public IDataResult<List<CarDetailDto>> GetTopSixDealsWithDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetTopSixDealsDetails(), Messages.CarsListed);
+        }
+
         [CacheRemoveAspect("ICarService.Get")]
         //[SecuredOperation("admin,moderator")]
         [ValidationAspect(typeof(CarValidator))]

@@ -1,71 +1,115 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using Core.DataAccess.InMemory;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DataAccess.Concrete.InMemory
 {
-    public class InMemoryCarDal : ICarDal
+    public class InMemoryCarDal : InMemoryRepositoryBase<Car>, ICarDal
     {
-        private List<Car> _cars;
+        private List<Brand> _brands;
+        private List<Color> _colors;
 
-        public InMemoryCarDal()
+        public InMemoryCarDal(List<Color> colors, List<Brand> brands)
         {
-            _cars = new List<Car>
-            {
-                new Car
-                {
-                    Id = 1, BrandId = 1, ColorId = 1, DailyPrice = 150, Description = "Ford Focus Diesel",
-                    ModelYear = 2019
-                },
-                new Car
-                {
-                    Id = 2, BrandId = 2, ColorId = 1, DailyPrice = 90, Description = "Fiat Linea Diesel",
-                    ModelYear = 2013
-                },
-                new Car
-                {
-                    Id = 3, BrandId = 3, ColorId = 3, DailyPrice = 250, Description = "Volkswagen Golf Gasoline",
-                    ModelYear = 2020
-                },
-                new Car
-                {
-                    Id = 4, BrandId = 4, ColorId = 2, DailyPrice = 95, Description = "Reanult Symbol Diesel",
-                    ModelYear = 2012
-                },
-            };
+            _colors = colors;
+            _brands = brands;
         }
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        public List<CarDetailDto> GetCarsWithDetails()
         {
-            return _cars;
+            var result = from car in Instances
+                         join brand in _brands on car.BrandId equals brand.Id
+                         join color in _colors on car.ColorId equals color.Id
+                         select new CarDetailDto
+                         {
+                             CarId = car.Id,
+                             CarName = car.Description,
+                             BrandName = brand.Name,
+                             ColorName = color.Name,
+                             DailyPrice = car.DailyPrice,
+                             ModelYear = car.ModelYear
+                         };
+            return result.ToList();
         }
 
-        public Car Get(Expression<Func<Car, bool>> filter)
+        public CarDetailDto GetCarWithDetailsById(int id)
         {
-            throw new NotImplementedException();
+            var result = from car in Instances
+                         join brand in _brands on car.BrandId equals brand.Id
+                         join color in _colors on car.ColorId equals color.Id
+                         where car.Id == id
+                         select new CarDetailDto
+                         {
+                             CarId = car.Id,
+                             CarName = car.Description,
+                             BrandName = brand.Name,
+                             ColorName = color.Name,
+                             DailyPrice = car.DailyPrice,
+                             ModelYear = car.ModelYear
+                         };
+            return result.SingleOrDefault();
         }
 
-        public void Add(Car entity)
+        public List<CarDetailDto> GetCarsWithDetailsByBrandId(int brandId)
         {
-            throw new NotImplementedException();
+            var result = from car in Instances
+                         join brand in _brands on car.BrandId equals brand.Id
+                         join color in _colors on car.ColorId equals color.Id
+                         where car.BrandId == brandId
+                         select new CarDetailDto
+                         {
+                             CarId = car.Id,
+                             CarName = car.Description,
+                             BrandName = brand.Name,
+                             ColorName = color.Name,
+                             DailyPrice = car.DailyPrice,
+                             ModelYear = car.ModelYear
+                         };
+            return result.ToList();
         }
 
-        public void Update(Car entity)
+        public List<CarDetailDto> GetCarsWithDetailsByColorId(int colorId)
         {
-            throw new NotImplementedException();
+            var result = from car in Instances
+                         join brand in _brands on car.BrandId equals brand.Id
+                         join color in _colors on car.ColorId equals color.Id
+                         where car.ColorId == colorId
+                         select new CarDetailDto
+                         {
+                             CarId = car.Id,
+                             CarName = car.Description,
+                             BrandName = brand.Name,
+                             ColorName = color.Name,
+                             DailyPrice = car.DailyPrice,
+                             ModelYear = car.ModelYear
+                         };
+            return result.ToList();
         }
 
-        public void Delete(Car entity)
+        public List<CarDetailDto> GetCarsWithDetailsByBrandIdAndColorId(int brandId, int colorId)
         {
-            throw new NotImplementedException();
+            var result = from car in Instances
+                         join brand in _brands on car.BrandId equals brand.Id
+                         join color in _colors on car.ColorId equals color.Id
+                         where car.BrandId == brandId && car.ColorId == colorId
+                         select new CarDetailDto
+                         {
+                             CarId = car.Id,
+                             CarName = car.Description,
+                             BrandName = brand.Name,
+                             ColorName = color.Name,
+                             DailyPrice = car.DailyPrice,
+                             ModelYear = car.ModelYear
+                         };
+            return result.ToList();
         }
 
-        public List<CarDetailDto> GetCarsWithDetail()
+        public List<CarDetailDto> GetTopSixDealsDetails()
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }

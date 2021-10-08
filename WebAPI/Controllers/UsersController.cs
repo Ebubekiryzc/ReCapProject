@@ -30,6 +30,13 @@ namespace WebAPI.Controllers
             return ReturnResult(result);
         }
 
+        [HttpGet("getbymail")]
+        public IActionResult GetByMail(string mail)
+        {
+            var result = _userService.GetByMail(mail);
+            return ReturnResult(result);
+        }
+
         [HttpPost("add")]
         public IActionResult Add(User user)
         {
